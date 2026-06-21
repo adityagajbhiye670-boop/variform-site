@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veriform — Digital Trust & Security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#060810;--bg2:#0C0F1A;--bg3:#111527;
+  --indigo:#6366F1;--indigo-dim:#1E2044;--indigo-glow:rgba(99,102,241,0.15);
+  --green:#10B981;--green-dim:rgba(16,185,129,0.1);
+  --red:#EF4444;
+  --text:#F0F2FF;--text-dim:#8B8FA8;--text-muted:#4A4E6A;
+  --border:rgba(99,102,241,0.15);--border2:rgba(240,242,255,0.06);
+  --display:'Syne',sans-serif;--body:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* CANVAS PARTICLES */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.4}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,8,16,0.7);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:0.05em;display:flex;align-items:center;gap:12px}
+.logo-icon{width:32px;height:32px;position:relative;display:flex;align-items:center;justify-content:center}
+.logo-icon::before,.logo-icon::after{content:'';position:absolute;border-radius:50%;border:1.5px solid var(--indigo)}
+.logo-icon::before{width:100%;height:100%;animation:spin 8s linear infinite}
+.logo-icon::after{width:60%;height:60%;border-color:var(--green);animation:spin 5s linear infinite reverse}
+.logo-dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:blink 2s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.nav-links{display:flex;gap:36px;font-size:14px;color:var(--text-dim)}
+.nav-links a{transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--indigo);transition:width 0.3s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-family:var(--mono);font-size:13px;padding:10px 22px;background:var(--indigo);color:#fff;border-radius:6px;transition:all 0.3s;position:relative;overflow:hidden}
+.nav-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);opacity:0;transition:opacity 0.3s}
+.nav-cta:hover::before{opacity:1}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,0.4)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 40px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(99,102,241,0.08),transparent 70%);pointer-events:none}
+.hero-grid{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1}
+.hero-tag{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.hero-tag::before{content:'';width:20px;height:1px;background:var(--green)}
+h1{font-family:var(--display);font-size:62px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:24px}
+h1 .line2{color:var(--indigo);display:block;position:relative}
+.typewriter{border-right:2px solid var(--indigo);animation:cursor 1s ease-in-out infinite}
+@keyframes cursor{0%,100%{border-color:var(--indigo)}50%{border-color:transparent}}
+.hero-sub{font-size:16px;color:var(--text-dim);max-width:460px;margin-bottom:40px;line-height:1.75}
+.hero-btns{display:flex;gap:14px;margin-bottom:48px}
+.btn-main{font-family:var(--mono);font-size:14px;font-weight:500;padding:14px 28px;background:var(--indigo);color:#fff;border-radius:8px;transition:all 0.3s;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(99,102,241,0.5)}
+.btn-ghost{font-family:var(--mono);font-size:14px;padding:14px 28px;border:1px solid var(--border);border-radius:8px;color:var(--text-dim);transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{border-color:var(--indigo);color:var(--text);background:var(--indigo-glow)}
+.hero-stats{display:flex;gap:32px}
+.stat{border-left:1px solid var(--border);padding-left:20px}
+.stat-num{font-family:var(--display);font-size:28px;font-weight:800;color:var(--text)}
+.stat-label{font-size:12px;color:var(--text-dim);margin-top:2px}
+
+/* RADAR */
+.radar-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.radar{width:380px;height:380px;position:relative}
+.radar-ring{position:absolute;border-radius:50%;border:1px solid rgba(99,102,241,0.2);top:50%;left:50%;transform:translate(-50%,-50%)}
+.radar-ring:nth-child(1){width:100%;height:100%}
+.radar-ring:nth-child(2){width:75%;height:75%}
+.radar-ring:nth-child(3){width:50%;height:50%}
+.radar-ring:nth-child(4){width:25%;height:25%;border-color:rgba(99,102,241,0.4)}
+.radar-sweep{position:absolute;width:50%;height:50%;top:50%;left:50%;transform-origin:0% 100%;animation:sweep 3s linear infinite}
+.radar-sweep::before{content:'';position:absolute;width:100%;height:100%;background:conic-gradient(from 0deg,transparent 0deg,rgba(99,102,241,0.4) 60deg,transparent 60deg);border-radius:0 100% 0 0}
+@keyframes sweep{to{transform:rotate(360deg)}}
+.radar-center{position:absolute;width:12px;height:12px;background:var(--indigo);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 20px var(--indigo)}
+.radar-crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%}
+.radar-crosshair::before,.radar-crosshair::after{content:'';position:absolute;background:rgba(99,102,241,0.15)}
+.radar-crosshair::before{width:1px;height:100%;left:50%;top:0}
+.radar-crosshair::after{width:100%;height:1px;top:50%;left:0}
+.radar-blip{position:absolute;width:8px;height:8px;border-radius:50%;transform:translate(-50%,-50%)}
+.radar-blip::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid currentColor;animation:blip-pulse 2s ease-out infinite}
+@keyframes blip-pulse{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3)}}
+.blip-green{background:var(--green);color:var(--green);top:30%;left:60%}
+.blip-green2{background:var(--green);color:var(--green);top:65%;left:35%;animation-delay:0.8s}
+.blip-red{background:var(--red);color:var(--red);top:40%;left:25%;animation-delay:1.4s}
+.radar-label{position:absolute;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:0.1em}
+.radar-label.tl{top:10%;left:10%}
+.radar-label.tr{top:10%;right:5%}
+.radar-label.bl{bottom:10%;left:10%}
+.radar-label.br{bottom:10%;right:5%}
+.radar-scan-line{position:absolute;width:100%;text-align:center;bottom:-48px;left:0;font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+.scan-status{display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);padding:8px 16px;border-radius:20px}
+.scan-dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:blink 1.5s ease-in-out infinite}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* SECTION */
+.section{padding:100px 40px;position:relative;z-index:1}
+.wrap{max-width:1200px;margin:0 auto}
+.section-tag{font-family:var(--mono);font-size:11px;color:var(--indigo);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-tag::before{content:'';width:16px;height:1px;background:var(--indigo)}
+h2{font-family:var(--display);font-size:42px;font-weight:800;letter-spacing:-0.02em;margin-bottom:16px}
+.section-sub{color:var(--text-dim);font-size:16px;max-width:520px;line-height:1.75}
+
+/* SERVICES */
+.services{background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2)}
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-top:56px}
+.svc{background:var(--bg);padding:36px;transition:all 0.4s;position:relative;overflow:hidden;cursor:default}
+.svc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--indigo-glow),transparent);opacity:0;transition:opacity 0.4s}
+.svc:hover::before{opacity:1}
+.svc:hover{background:var(--bg3)}
+.svc-icon{width:44px;height:44px;background:var(--indigo-dim);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:20px;transition:all 0.3s}
+.svc:hover .svc-icon{background:var(--indigo);box-shadow:0 8px 24px rgba(99,102,241,0.4);transform:translateY(-2px)}
+.svc-tag{font-family:var(--mono);font-size:10px;color:var(--indigo);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px}
+.svc h3{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:10px}
+.svc p{color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:24px}
+.svc-price{display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid var(--border2)}
+.svc-price-label{font-size:12px;color:var(--text-muted)}
+.svc-price-val{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--indigo)}
+
+/* FREE TOOL */
+.tool-section{background:var(--bg)}
+.tool-container{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:16px;padding:48px;max-width:700px;margin:48px auto 0;position:relative;overflow:hidden}
+.tool-container::before{content:'';position:absolute;top:-1px;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--indigo),transparent)}
+.tool-label{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.tool-label::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green)}
+.tool-row{display:flex;gap:10px}
+.tool-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 18px;color:var(--text);font-family:var(--mono);font-size:14px;outline:none;transition:border-color 0.3s}
+.tool-input:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(99,102,241,0.1)}
+.tool-btn{font-family:var(--mono);font-size:14px;font-weight:500;padding:14px 28px;background:var(--indigo);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:all 0.3s;white-space:nowrap}
+.tool-btn:hover:not(:disabled){background:#4F52D9;transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,0.4)}
+.tool-btn:disabled{opacity:0.6;cursor:not-allowed}
+.tool-result{margin-top:20px;padding:20px;border-radius:10px;font-family:var(--mono);font-size:13px;display:none;animation:slideUp 0.4s ease}
+.tool-result.show{display:block}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tool-result.safe{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2)}
+.tool-result.risky{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2)}
+.result-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.result-verdict{font-size:15px;font-weight:600}
+.result-verdict.safe{color:var(--green)}
+.result-verdict.risky{color:var(--red)}
+.result-score{font-size:28px;font-weight:600}
+.result-score.safe{color:var(--green)}
+.result-score.risky{color:var(--red)}
+.result-summary{color:var(--text-dim);margin-bottom:12px;font-family:var(--body);font-size:14px;line-height:1.6}
+.result-flags{color:var(--text-dim);font-size:12px;line-height:2}
+.result-rec{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:var(--text-dim);font-family:var(--body)}
+.result-cta{margin-top:10px;font-size:12px}
+.result-cta a{color:var(--indigo)}
+
+/* PROCESS */
+.process-section{background:var(--bg2);border-top:1px solid var(--border2)}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border2);border-radius:12px;overflow:hidden;margin-top:56px}
+.process-step{background:var(--bg);padding:32px;transition:background 0.3s}
+.process-step:hover{background:var(--bg3)}
+.step-num{font-family:var(--mono);font-size:11px;color:var(--indigo);letter-spacing:0.1em;margin-bottom:20px}
+.step-icon{font-size:28px;margin-bottom:16px}
+.process-step h3{font-family:var(--display);font-size:18px;font-weight:700;margin-bottom:10px}
+.process-step p{color:var(--text-dim);font-size:13px;line-height:1.7}
+
+/* TRUST BAR */
+.trust{border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);background:var(--bg);padding:24px 40px}
+.trust-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-dim)}
+.trust-item span:first-child{font-size:18px}
+
+/* CONTACT */
+.contact-section{background:var(--bg)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:56px}
+.contact-info h3{font-family:var(--display);font-size:28px;font-weight:700;margin-bottom:16px}
+.contact-info p{color:var(--text-dim);font-size:15px;line-height:1.75;margin-bottom:28px}
+.contact-email{font-family:var(--mono);font-size:16px;color:var(--indigo);display:flex;align-items:center;gap:8px}
+.contact-email::before{content:'→';color:var(--text-dim)}
+.contact-features{margin-top:32px;display:flex;flex-direction:column;gap:12px}
+.contact-feature{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-dim)}
+.contact-feature::before{content:'✓';color:var(--green);font-weight:700}
+.contact-form{display:flex;flex-direction:column;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:12px;color:var(--text-dim);font-family:var(--mono);letter-spacing:0.05em}
+.form-input,.form-textarea{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;color:var(--text);font-family:var(--body);font-size:14px;outline:none;transition:all 0.3s;resize:none}
+.form-input:focus,.form-textarea:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(99,102,241,0.1)}
+.form-submit{font-family:var(--mono);font-size:14px;font-weight:500;padding:16px;background:var(--indigo);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:all 0.3s;margin-top:8px}
+.form-submit:hover{background:#4F52D9;transform:translateY(-1px);box-shadow:0 12px 32px rgba(99,102,241,0.4)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border2);padding:32px 40px;position:relative;z-index:1}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.footer-logo{font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:0.05em;color:var(--text-dim)}
+.footer-text{font-family:var(--mono);font-size:12px;color:var(--text-muted)}
+
+/* GLOW LINE */
+.glow-line{height:1px;background:linear-gradient(90deg,transparent,var(--indigo),transparent);margin:0}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{padding:100px 20px 60px}
+  .hero-grid{grid-template-columns:1fr;gap:60px}
+  h1{font-size:42px}
+  .radar{width:280px;height:280px}
+  .section{padding:60px 20px}
+  .services-grid,.process-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr;gap:40px}
+  .trust-inner{justify-content:center}
+  footer{padding:24px 20px}
+  .tool-container{padding:28px 20px}
+  .tool-row{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav>
+  <div class="logo">
+    <div class="logo-icon"><div class="logo-dot"></div></div>
+    VERIFORM
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#scanner">Free Scan</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">Request Audit →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">AI-powered cybersecurity</div>
+      <h1>We detect threats<br><span class="line2" id="typewriter"></span></h1>
+      <p class="hero-sub">Enterprise-grade security audits, real-time threat detection, and digital trust verification — for businesses that can't afford to find out the hard way.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-main">Request an Audit <span>→</span></a>
+        <a href="#scanner" class="btn-ghost">Try Free Scanner</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Threats blocked</div></div>
+        <div class="stat"><div class="stat-num">24h</div><div class="stat-label">Report turnaround</div></div>
+        <div class="stat"><div class="stat-num">99%</div><div class="stat-label">Accuracy rate</div></div>
+      </div>
+    </div>
+    <div class="radar-wrap">
+      <div class="radar">
+        <div class="radar-ring"></div>
+        <div class="radar-ring"></div>
+        <div class="radar-ring"></div>
+        <div class="radar-ring"></div>
+        <div class="radar-crosshair"></div>
+        <div class="radar-sweep"><div></div></div>
+        <div class="radar-center"></div>
+        <div class="radar-blip blip-green"></div>
+        <div class="radar-blip blip-green2"></div>
+        <div class="radar-blip blip-red"></div>
+        <div class="radar-label tl">NW / 315°</div>
+        <div class="radar-label tr">NE / 045°</div>
+        <div class="radar-label bl">SW / 225°</div>
+        <div class="radar-label br">SE / 135°</div>
+      </div>
+      <div class="radar-scan-line">
+        <div class="scan-status">
+          <div class="scan-dot"></div>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--text-dim)">Scanning network perimeter...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-item"><span>🔒</span><span>SSL Verified Audits</span></div>
+    <div class="trust-item"><span>🤖</span><span>AI-Powered Analysis</span></div>
+    <div class="trust-item"><span>⚡</span><span>24-Hour Reports</span></div>
+    <div class="trust-item"><span>🌍</span><span>Global Clients</span></div>
+    <div class="trust-item"><span>🛡️</span><span>Zero Data Retention</span></div>
+  </div>
+</div>
+
+<section class="services section reveal" id="services">
+  <div class="wrap">
+    <div class="section-tag">What we do</div>
+    <h2>Security Services</h2>
+    <p class="section-sub">From quick scam checks to full server hardening — professional reports delivered in plain language.</p>
+    <div class="services-grid">
+      <div class="svc reveal">
+        <div class="svc-icon">🔍</div>
+        <div class="svc-tag">Audit</div>
+        <h3>Website Security Audit</h3>
+        <p>Full scan of your site — open ports, outdated software, weak configs, malware, and exposed data. You get a clear fix-it report within 24 hours.</p>
+        <div class="svc-price"><span class="svc-price-label">Starting at</span><span class="svc-price-val">$49</span></div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-icon">🎯</div>
+        <div class="svc-tag">Verify</div>
+        <h3>Scam & Legitimacy Check</h3>
+        <p>Worried a website, email, or link is fake? We verify domains, certificates, and patterns to give you a clear safe/unsafe verdict.</p>
+        <div class="svc-price"><span class="svc-price-label">Starting at</span><span class="svc-price-val">$9</span></div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-icon">📡</div>
+        <div class="svc-tag">Monitor</div>
+        <h3>Data Breach Monitoring</h3>
+        <p>Ongoing checks to see if your business email, credentials, or customer data appears in known leaks — with instant alerts when it does.</p>
+        <div class="svc-price"><span class="svc-price-label">From</span><span class="svc-price-val">$15/mo</span></div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-icon">🛡️</div>
+        <div class="svc-tag">Harden</div>
+        <h3>Server & System Hardening</h3>
+        <p>We review your server setup and lock down access, permissions, and configurations against the most common attack vectors.</p>
+        <div class="svc-price"><span class="svc-price-label">Starting at</span><span class="svc-price-val">$79</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tool-section section reveal" id="scanner">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:0">
+      <div class="section-tag" style="justify-content:center"><span style="display:none"></span>Free Tool</div>
+      <h2>Instant AI Threat Scanner</h2>
+      <p class="section-sub" style="margin:0 auto">Paste any URL, email, or suspicious text — our Claude AI analyzes it for threats in seconds. No signup needed.</p>
+    </div>
+    <div class="tool-container">
+      <div class="tool-label">AI Scanner — Powered by Claude</div>
+      <div class="tool-row">
+        <input class="tool-input" id="urlInput" type="text" placeholder="https://example.com or paste suspicious text..." />
+        <button class="tool-btn" id="scanBtn" onclick="scanWithAI()">Analyze →</button>
+      </div>
+      <div class="tool-result" id="toolResult"></div>
+    </div>
+  </div>
+</section>
+
+<section class="process-section section reveal" id="process">
+  <div class="wrap">
+    <div class="section-tag">How it works</div>
+    <h2>Simple Process</h2>
+    <p class="section-sub">From your first message to a delivered report — four clear steps.</p>
+    <div class="process-grid">
+      <div class="process-step reveal">
+        <div class="step-num">STEP 01</div>
+        <div class="step-icon">💬</div>
+        <h3>Tell Us the Problem</h3>
+        <p>Share what you need checked — website URL, suspicious link, server details, or just describe what's worrying you.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">STEP 02</div>
+        <div class="step-icon">🔬</div>
+        <h3>AI Analysis</h3>
+        <p>Our AI-powered tools scan for malware, open ports, SSL issues, data breaches, and known threat signatures.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">STEP 03</div>
+        <div class="step-icon">📋</div>
+        <h3>Plain-Language Report</h3>
+        <p>You get a clear report — no jargon. What we found, how serious it is, and exactly what to do next.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">STEP 04</div>
+        <div class="step-icon">✅</div>
+        <h3>You're Protected</h3>
+        <p>Act on the findings yourself or hire us to fix it. Either way, you know exactly where you stand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section section reveal" id="contact">
+  <div class="wrap">
+    <div class="section-tag">Get in touch</div>
+    <h2>Request an Audit</h2>
+    <p class="section-sub">Tell us what you need. We respond within 24 hours with a clear plan and pricing.</p>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Work with us directly</h3>
+        <p>Every audit is handled personally. You get a real human response — not a bot — and a report written specifically for your situation.</p>
+        <div class="contact-email">hello@veriform.dev</div>
+        <div class="contact-features">
+          <div class="contact-feature">Response within 24 hours</div>
+          <div class="contact-feature">Plain-language reports, no jargon</div>
+          <div class="contact-feature">USD pricing, global clients welcome</div>
+          <div class="contact-feature">Secure — your data stays private</div>
+        </div>
+      </div>
+      <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Your name</label>
+          <input class="form-input" type="text" placeholder="John Smith" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email address</label>
+          <input class="form-input" type="email" placeholder="john@company.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Website or system to check</label>
+          <input class="form-input" type="text" placeholder="https://yoursite.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">What's going on?</label>
+          <textarea class="form-textarea" rows="4" placeholder="Describe your security concern..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Request →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">VERIFORM</div>
+    <div class="footer-text">© 2026 Veriform — Digital trust, verified.</div>
+  </div>
+</footer>
+
+<script>
+// PARTICLES
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();
+window.addEventListener('resize',resize);
+for(let i=0;i<60;i++){
+  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,size:Math.random()*1.5+0.5,opacity:Math.random()*0.4+0.1})
+}
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
+    if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fillStyle=`rgba(99,102,241,${p.opacity})`;ctx.fill();
+  });
+  particles.forEach((p,i)=>{
+    particles.slice(i+1).forEach(p2=>{
+      const d=Math.hypot(p.x-p2.x,p.y-p2.y);
+      if(d<120){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);ctx.strokeStyle=`rgba(99,102,241,${0.08*(1-d/120)})`;ctx.lineWidth=0.5;ctx.stroke()}
+    })
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// TYPEWRITER
+const words=['before they strike.','before it costs you.','while you still can.'];
+let wi=0,ci=0,del=false;
+const el=document.getElementById('typewriter');
+function type(){
+  const word=words[wi];
+  if(!del){
+    el.textContent=word.slice(0,++ci);
+    if(ci===word.length){del=true;setTimeout(type,2000);return}
+  } else {
+    el.textContent=word.slice(0,--ci);
+    if(ci===0){del=false;wi=(wi+1)%words.length}
+  }
+  setTimeout(type,del?50:80);
+}
+type();
+
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// AI SCANNER
+async function scanWithAI(){
+  const input=document.getElementById('urlInput').value.trim();
+  const result=document.getElementById('toolResult');
+  const btn=document.getElementById('scanBtn');
+  if(!input){result.className='tool-result show risky';result.innerHTML='<div class="result-verdict risky">⚠ Please enter something to scan.</div>';return}
+  btn.disabled=true;btn.textContent='Scanning...';
+  result.className='tool-result show safe';
+  result.innerHTML='<div style="color:var(--text-dim);font-family:var(--mono);font-size:13px">⟳ AI analyzing... please wait</div>';
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-haiku-4-5-20251001",
+        max_tokens:1000,
+        system:'You are an expert cybersecurity analyst. Analyze the given URL, email, or text for security threats. Respond ONLY in valid JSON, no extra text: {"verdict":"SAFE or SUSPICIOUS or DANGEROUS","score":0-100,"summary":"one clear sentence","flags":["issue1"],"recommendation":"action to take"}',
+        messages:[{role:"user",content:"Analyze for security threats: "+input}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content.map(i=>i.text||'').join('');
+    const clean=text.replace(/```json|```/g,'').trim();
+    const r=JSON.parse(clean);
+    const safe=r.verdict==='SAFE';
+    const cls=safe?'safe':'risky';
+    result.className='tool-result show '+cls;
+    result.innerHTML=
+      '<div class="result-header">'
+      +'<span class="result-verdict '+cls+'">'+(safe?'✓ SAFE':'⚠ '+r.verdict)+'</span>'
+      +'<span class="result-score '+cls+'">'+r.score+'<span style="font-size:14px;opacity:0.5">/100</span></span>'
+      +'</div>'
+      +'<div class="result-summary">'+r.summary+'</div>'
+      +(r.flags&&r.flags.length?'<div class="result-flags">'+r.flags.map(f=>'— '+f).join('<br>')+'</div>':'')
+      +'<div class="result-rec">💡 '+r.recommendation+'</div>'
+      +(!safe?'<div class="result-cta">Need a full audit? <a href="#contact">Contact us →</a></div>':'');
+  }catch(e){
+    result.className='tool-result show risky';
+    result.innerHTML='<div class="result-verdict risky">⚠ Scanner error. Please try again.</div>';
+  }
+  btn.disabled=false;btn.textContent='Analyze →';
+}
+document.getElementById('urlInput').addEventListener('keypress',e=>{if(e.key==='Enter')scanWithAI()});
+
+// FORM
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('.form-submit');
+  btn.textContent='Sending...';btn.disabled=true;
+  setTimeout(()=>{btn.textContent='✓ Sent! We\'ll reply within 24h';btn.style.background='var(--green)'},1200);
+}
+</script>
+</body>
+</html>
